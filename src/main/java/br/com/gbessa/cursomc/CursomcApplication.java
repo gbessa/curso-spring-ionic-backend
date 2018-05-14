@@ -71,8 +71,6 @@ public class CursomcApplication implements CommandLineRunner {
 		est1.getCidades().addAll(Arrays.asList(cid1));
 		est2.getCidades().addAll(Arrays.asList(cid2, cid3));
 
-		estadoRepository.saveAll(Arrays.asList(est1, est2));
-		cidadeRepository.saveAll(Arrays.asList(cid1, cid2, cid3));
 
 		Cliente cli1 = new Cliente(null, "Maria Silva", "msilva@gmail.com", "11111111111", TipoCliente.PESSOAFISICA);
 		cli1.getTelefones().addAll(Arrays.asList("21-98766666", "21-453462162"));
@@ -80,6 +78,8 @@ public class CursomcApplication implements CommandLineRunner {
 		Endereco end2 = new Endereco(null, "Rua Moreira Cesar", "877", "fundos", "Icarai", "24333-000", cli1, cid2);
 		cli1.getEnderecos().addAll(Arrays.asList(end1, end2));
 		
+		estadoRepository.saveAll(Arrays.asList(est1, est2));
+		cidadeRepository.saveAll(Arrays.asList(cid1, cid2, cid3));
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(end1, end2));
 
