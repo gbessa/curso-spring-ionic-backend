@@ -4,40 +4,44 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import br.com.gbessa.cursomc.enums.EstadoPagamento;
 
 @Entity
-public class PagamentoComBoleto extends Pagamento{
-	private static final long serialVersionUID = 1L;
-	
-	private Date dataVencimento;
-	private Date dataPagamento;
-	
-	public PagamentoComBoleto() {
-		
-	}
+public class PagamentoComBoleto extends Pagamento {
+    private static final long serialVersionUID = 1L;
 
-	public PagamentoComBoleto(Integer id, EstadoPagamento estado, Pedido pedido, Date dataVencimento, Date dataPagamento) {
-		super(id, estado, pedido);
-		this.dataVencimento = dataVencimento;
-		this.dataPagamento = dataPagamento;
-	}
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm")
+    private Date dataVencimento;
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm")
+    private Date dataPagamento;
 
-	public Date getDataVencimento() {
-		return dataVencimento;
-	}
+    public PagamentoComBoleto() {
 
-	public void setDataVencimento(Date dataVencimento) {
-		this.dataVencimento = dataVencimento;
-	}
+    }
 
-	public Date getDataPagamento() {
-		return dataPagamento;
-	}
+    public PagamentoComBoleto(Integer id, EstadoPagamento estado, Pedido pedido, Date dataVencimento,
+	    Date dataPagamento) {
+	super(id, estado, pedido);
+	this.dataVencimento = dataVencimento;
+	this.dataPagamento = dataPagamento;
+    }
 
-	public void setDataPagamento(Date dataPagamento) {
-		this.dataPagamento = dataPagamento;
-	}
-	
-	
+    public Date getDataVencimento() {
+	return dataVencimento;
+    }
+
+    public void setDataVencimento(Date dataVencimento) {
+	this.dataVencimento = dataVencimento;
+    }
+
+    public Date getDataPagamento() {
+	return dataPagamento;
+    }
+
+    public void setDataPagamento(Date dataPagamento) {
+	this.dataPagamento = dataPagamento;
+    }
+
 }
