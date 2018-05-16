@@ -1,9 +1,12 @@
 package br.com.gbessa.cursomc.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.gbessa.cursomc.domain.Categoria;	
+import br.com.gbessa.cursomc.domain.Categoria;
+import br.com.gbessa.cursomc.dto.CategoriaDTO;
 import br.com.gbessa.cursomc.services.CategoriaService;
 
 @RestController
@@ -23,6 +27,13 @@ public class CategoriaResource {
     @Autowired
     private CategoriaService service;
 
+    @GetMapping()
+    public ResponseEntity<List<CategoriaDTO>> findAll() {
+	List<Categoria> list = service.findAll();
+	List<CategoriaDTO> listDto = list.stream().map(categoria -> new CategoriaDTO(categoria)).collect(Collectors.toList());
+	return ResponseEntity.ok().body(listDto);
+    }
+    
     //@RequestMapping(value = "/{id}", method=RequestMethod.GET)
     @GetMapping(value="/{id}")
     public ResponseEntity<Categoria> find(@PathVariable Integer id) {
@@ -45,10 +56,12 @@ public class CategoriaResource {
 	return ResponseEntity.noContent().build();
     }
     
-    @RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
-    //@GetMapping(value="/{id}")
+    //@RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
+    @DeleteMapping(value="/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
 	service.delete(id);
 	return ResponseEntity.noContent().build();
     }
+    
+   
 }
