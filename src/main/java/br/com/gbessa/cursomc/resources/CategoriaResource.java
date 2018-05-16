@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,15 +60,17 @@ public class CategoriaResource {
 
     // @RequestMapping(method=RequestMethod.POST)
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody Categoria obj) { // Essa anotação é para converter o JSON em objeto
-								     // java
+    public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto) { // Essa anotação é para converter o JSON em objeto java
+	Categoria obj = service.fromDTO(objDto);
 	obj = service.insert(obj);
 	URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 	return ResponseEntity.created(uri).build();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
+    //@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id) {
+	Categoria obj = service.fromDTO(objDto);
 	obj.setId(id); // só para garantir rs
 	obj = service.update(obj);
 	return ResponseEntity.noContent().build();
