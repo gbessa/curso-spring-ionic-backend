@@ -35,7 +35,7 @@ public class CategoriaResource {
     @GetMapping()
     public ResponseEntity<List<CategoriaDTO>> findAll() {
 	List<Categoria> list = service.findAll();
-	List<CategoriaDTO> listDto = list.stream().map(categoria -> new CategoriaDTO(categoria))
+	List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj))
 		.collect(Collectors.toList());
 	return ResponseEntity.ok().body(listDto);
     }
@@ -47,7 +47,7 @@ public class CategoriaResource {
 	    @RequestParam(name = "orderBy", defaultValue = "nome") String orderBy,
 	    @RequestParam(name = "direction", defaultValue = "ASC") String direction) {
 	Page<Categoria> list = service.findPage(page, linesPerPage, orderBy, direction);
-	Page<CategoriaDTO> listDto = list.map(categoria -> new CategoriaDTO(categoria));
+	Page<CategoriaDTO> listDto = list.map(obj -> new CategoriaDTO(obj));
 	return ResponseEntity.ok().body(listDto);
     }
 
