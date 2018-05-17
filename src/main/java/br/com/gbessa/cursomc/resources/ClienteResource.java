@@ -23,6 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.gbessa.cursomc.domain.Cliente;
 import br.com.gbessa.cursomc.dto.CategoriaDTO;
 import br.com.gbessa.cursomc.dto.ClienteDTO;
+import br.com.gbessa.cursomc.dto.ClienteNewDTO;
 import br.com.gbessa.cursomc.services.ClienteService;
 
 @RestController
@@ -58,7 +59,7 @@ public class ClienteResource {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO objDto) { // Essa anotação é para converter o JSON em objeto java
+    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) { // Essa anotação é para converter o JSON em objeto java
 	Cliente obj = service.fromDTO(objDto);
 	obj = service.insert(obj);
 	URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();

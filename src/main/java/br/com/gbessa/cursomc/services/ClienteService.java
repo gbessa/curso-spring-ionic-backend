@@ -1,7 +1,10 @@
 package br.com.gbessa.cursomc.services;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -10,9 +13,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.com.gbessa.cursomc.domain.Cidade;
 import br.com.gbessa.cursomc.domain.Cliente;
+import br.com.gbessa.cursomc.domain.Endereco;
 import br.com.gbessa.cursomc.dto.ClienteDTO;
+import br.com.gbessa.cursomc.dto.ClienteNewDTO;
+import br.com.gbessa.cursomc.enums.TipoCliente;
+import br.com.gbessa.cursomc.repositories.CidadeRepository;
 import br.com.gbessa.cursomc.repositories.ClienteRepository;
+import br.com.gbessa.cursomc.repositories.EnderecoRepository;
 import br.com.gbessa.cursomc.services.exceptions.DataIntegrityException;
 import br.com.gbessa.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -21,7 +30,13 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository repo;
+    
+    @Autowired
+    private CidadeRepository cidadeRepository;    
 
+    @Autowired
+    private EnderecoRepository enderecoRepository;   
+    
     public Cliente find(Integer id) {
 	Optional<Cliente> obj = repo.findById(id);
 	return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -32,10 +47,12 @@ public class ClienteService {
 	return repo.findAll();
     }
 
+    @Transactional
     public Cliente insert(Cliente obj) {
-	obj.setId(null); // Para garantir que o save vai inserir e não atualizar, caso algum id seja
-			 // mandado
-	return repo.save(obj);
+	obj.setId(null); // Para garantir que o save vai inserir e não atualizar, caso algum id seja mandado
+	obj = repo.save(obj);
+	enderecoRepository.saveAll(obj.getEnderecos());
+	return obj;
     }
 
     public Cliente update(Cliente obj) {
@@ -68,5 +85,20 @@ public class ClienteService {
     
     public Cliente fromDTO(ClienteDTO objDto) {
 	return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
+    }
+    
+    public Cliente fromDTO(ClienteNewDTO objDto) {
+	Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()));
+	Optional<Cidade> cid = cidadeRepository.findById(objDto.getCidadeId());
+	Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, cid.get());
+	cli.getEnderecos().add(end);
+	cli.getTelefones().add(objDto.getTelefone1());
+	if (objDto.getTelefone2() != null) {
+	    cli.getTelefones().add(objDto.getTelefone2());
+	}
+	if (objDto.getTelefone3() != null) {
+	    cli.getTelefones().add(objDto.getTelefone3());
+	}
+	return cli;
     }
 }
