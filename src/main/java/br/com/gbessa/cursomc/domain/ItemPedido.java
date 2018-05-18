@@ -31,6 +31,10 @@ public class ItemPedido implements Serializable {
 	this.quantidade = quantidade;
 	this.preco = preco;
     }
+    
+    public Double getSubTotal() { // iniciar o método com get já faz com que o Spring entenda e insira no JSON
+	return (preco - desconto) * quantidade;
+    }
 
     @JsonIgnore
     public Pedido getPedido() {
