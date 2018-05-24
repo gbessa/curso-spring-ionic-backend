@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.gbessa.cursomc.domain.Cliente;
-import br.com.gbessa.cursomc.dto.CategoriaDTO;
 import br.com.gbessa.cursomc.dto.ClienteDTO;
 import br.com.gbessa.cursomc.dto.ClienteNewDTO;
 import br.com.gbessa.cursomc.services.ClienteService;
