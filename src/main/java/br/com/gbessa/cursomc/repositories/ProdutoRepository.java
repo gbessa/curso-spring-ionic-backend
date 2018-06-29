@@ -17,7 +17,7 @@ import br.com.gbessa.cursomc.domain.Produto;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Integer>{
 
-    // Usamos essa notação parra não precisar implementar a interface
+    // Usamos essa notação para não precisar implementar a interface
 //    @Query("SELECT DISTINCT obj FROM Produto obj INNER JOIN obj.categorias cat 	WHERE obj.nome LIKE %:nome% AND cat IN :categorias") 
 //    Page<Produto> search(
 //	    	@Param("nome") String nome, 

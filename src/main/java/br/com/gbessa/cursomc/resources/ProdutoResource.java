@@ -24,7 +24,6 @@ public class ProdutoResource {
     @Autowired
     private ProdutoService service;
 
-	Produto obj = service.find(id);
     @GetMapping()
     public ResponseEntity<Page<ProdutoDTO>> findPage(@RequestParam(name = "nome", defaultValue = "") String nome,
 	    @RequestParam(name = "categorias", defaultValue = "") String categorias,
